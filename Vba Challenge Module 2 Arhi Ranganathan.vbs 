@@ -1,0 +1,206 @@
+Attribute VB_Name = "Module1"
+Sub alphabetTesting():
+    
+    
+    'Declaring variables
+    
+    
+       Dim tickName As String
+       Dim totStockVol As Double
+       Dim tickrow As Double
+       Dim tickOpen As Double
+       Dim tickClose As Double
+       Dim yrlyChange As Double
+       Dim percentChange As Double
+       Dim row As Double
+       Dim lastRow As Double
+       Dim ws As Worksheet
+       
+       For Each ws In ActiveWorkbook.Worksheets
+                     ws.Activate
+                 
+                 
+                 ' Decalaring column name and Formating
+                 
+                 
+       Range("i1").Value = "Ticker"
+       
+       Range("j1").Value = "Yearly Change"
+       
+       Range("j1").EntireColumn.AutoFit
+       
+       Range("k1").Value = "PercentChange"
+       
+       Range("k1").EntireColumn.AutoFit
+       
+       Range("l1").Value = "Total Stock Volume "
+       
+       Range("l1").EntireColumn.AutoFit
+       
+       Range("p1").Value = "Ticker"
+       
+       Range("p1").EntireColumn.AutoFit
+       
+       Range("q1").Value = "Value"
+       
+       Range("o3").Value = " Greatest % Increase"
+       
+       Range("o5").Value = "Greatest % Decrease"
+       
+       Range("o7").Value = "Greatest Total Volume"
+       
+       Range("o1").EntireColumn.AutoFit
+       
+       Cells(3, 17).NumberFormat = "0.00%"
+       
+       Cells(5, 17).NumberFormat = "0.00%"
+        
+        Cells(7, 17).NumberFormat = "0"
+            
+           tickOpen = Cells(2, 3).Value
+    
+        
+            totStockVol = 0
+            
+            tickrow = 2
+       
+         lastRow = Cells(Rows.Count, 1).End(xlUp).row
+         
+         row = 2
+                                ' For loop Iteration for Stock name (Ticker), Total Stock Volume Open Value, Close Value ( Yearly Change)
+                                
+        For row = 2 To lastRow
+       
+            If Cells(row + 1, 1).Value <> Cells(row, 1).Value Then
+            
+               tickName = ws.Cells(row, 1).Value
+               
+               totStockVol = totStockVol + Cells(row, 7).Value
+              
+               tickClose = ws.Cells(row, 6).Value
+               
+               yrlyChange = tickClose - tickOpen
+               
+            If tickOpen = 0 Then
+            
+                percentChange = 0
+                
+            Else
+            
+                percentChange = yrlyChange / tickOpen
+                
+            End If
+            
+                            ws.Cells(tickrow, 10).Value = yrlyChange
+           
+                            Cells(tickrow, 9).Value = tickName
+            
+                            Cells(tickrow, 12).Value = totStockVol
+            
+                            Cells(tickrow, 11).Value = percentChange
+            
+                            Cells(tickrow, 11).NumberFormat = "0.00%"
+               
+                            tickrow = tickrow + 1
+
+                            tickOpen = Cells(row + 1, 3)
+                
+                            totStockVol = 0
+                
+
+
+
+        Else
+                
+                    totStockVol = totStockVol + Cells(row, 7).Value
+
+
+            End If
+            
+        Next row
+        
+        
+         Dim lastRowCol As Double
+        
+        
+                                lastRowCol = Cells(Rows.Count, 9).End(xlUp).row
+                                
+                                'Calculating Greatest increase, Greatest Decrease, Greatest Total Volume
+                
+                   Dim perMax As Double
+                   
+                   Dim perMmin As Double
+                   
+                   Dim totMaxVol As Double
+                   
+                   Dim totalRowRange As Range
+                   
+                   Set totalRowRange = Range("k2:k" & Rows.Count)
+                   
+                   perMax = Application.WorksheetFunction.Max(totalRowRange)
+                   
+                   Cells(3, 17) = perMax
+                   
+                   Set totalRowRange = Range("k2:k" & Rows.Count)
+                   
+                   percmin = Application.WorksheetFunction.Min(totalRowRange)
+                   
+                   Cells(5, 17) = percmin
+                   
+                   Set totalRowRange = Range("l2:l" & Rows.Count)
+                   
+                   totMaxVol = Application.WorksheetFunction.Max(totalRowRange)
+                   
+                   Cells(7, 17) = totMaxVol
+                   
+                   
+                   
+              'Displaying Ticker Name corresponding Greatest increase, Greatest Decrease, Greatest Total Volume
+              
+                   Dim minMaxCalc As Integer
+                   
+                   
+                        For minMaxCalc = 2 To lastRowCol
+                        
+                            If Cells(minMaxCalc, 11).Value = Application.WorksheetFunction.Max(Range("k2:k" & lastRowCol)) Then
+                            
+                                Cells(3, 16).Value = Cells(minMaxCalc, 9).Value
+                          
+                            
+                            ElseIf Cells(minMaxCalc, 11).Value = Application.WorksheetFunction.Min(Range("k2:k" & lastRowCol)) Then
+                            
+                                Cells(5, 16).Value = Cells(minMaxCalc, 9).Value
+                            
+                                
+                            ElseIf Cells(minMaxCalc, 12).Value = Application.WorksheetFunction.Max(Range("l2:l" & lastRowCol)) Then
+                            
+                                Cells(7, 16).Value = Cells(minMaxCalc, 9).Value
+                            
+                
+                                
+                            End If
+                            
+                        Next minMaxCalc
+                        
+                'Displaying colors based on values of Yearly Change
+    
+    Dim i As Integer
+        
+                            For i = 2 To lastRowCol
+                            
+                                If Cells(i, 10).Value < 0 Then
+                                
+                                    Cells(i, 10).Interior.Color = RGB(255, 0, 0)
+                                    
+                                ElseIf Cells(i, 10).Value >= 0 Then
+                                
+                                    Cells(i, 10).Interior.Color = RGB(0, 255, 0)
+                                End If
+                                
+                            Next i
+    Next ws
+    
+    
+End Sub
+
+

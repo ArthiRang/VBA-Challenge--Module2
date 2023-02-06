@@ -1,0 +1,16 @@
+Vba Module 2 Challenge by Arthi Ranganathan
+
+-> Excel based file with stock name(ticker name), Stock open price, close price, Volume traded for the day is reviewed before VBA Script is developed.
+-> Each worksheet on the excelbook is iterated for years 2018,2019,2020.
+-> Inside each worksheet; Ticker name,date,open value, close value,volume is iterated.
+-> For Each Iteration;
+   * Yearly change between stock's(tickername) open price at beginning of the year and close price at end of the year calculated.
+   * Percentage change is calculated based on the difference between opening price at beginning of the year and closing price at end of the year.
+   * Total stock volume for each ticker is calculated based on the summation of shares traded for the tickername(stock).
+->Range functionality is used to calculate the Greatest % Increase in yearly change of the stock price of the tickernames(stocks).
+->Range functionality is used to calculate the Greatest % Decrease in yearly change of the stock price of the tickernames(stocks).
+->Range functionality is used to calculate the Greatest of total volume traded of the tickernames(stocks).  
+-> Ticker name is iterated through to find the which stock(tickername) is contributing to the above three attributes.
+-> Conditional formatting is used to highlight positive yearly change in Green and Negative yearly change in Red. 
+
+
